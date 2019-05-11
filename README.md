@@ -5,3 +5,4 @@
 - [x] Navigation (Testing)
 - [ ] Buttons
 - [ ] hero section with video
+- [ ] Preloader
