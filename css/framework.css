@@ -106,6 +106,10 @@ table {
     /*  NAVIGATION
         ========================================================================== */
 
+        .nav-list > li {
+            margin:0 20px;
+        }
+
         #btn-menu {
             width:40px;
             height:40px;
