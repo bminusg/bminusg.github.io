@@ -2,7 +2,7 @@
     //var body = document.body; //IE 'quirks'
     //var document = document.documentElement; //IE with doctype
     //document = (document.clientHeight) ? document : body;
-    var btnMenu, header;
+    var btnMenu, header, start, h;
 
 // POLYFILLS
     /**
@@ -46,15 +46,25 @@
 
 
     // NAVIGATION
-    function nav_BG(direction, scrollPosition) {
-        
-        //console.log(header.clientHeight);
+    function nav_BG(scrollPosition,lastScrollTop) {
 
-        if (direction === "down") {
-            header.classList.add("hidden");
-        } else {
-            header.classList.remove("hidden");
+        
+        switch(start) {
+            case "apres-hero":
+                console.log("APRES HERO");
+                
+                header.style.top = h + "px";
+                break;
+            default:
+                if (scrollPosition > lastScrollTop){
+                    header.classList.add("hidden");
+                } else {
+                    header.classList.remove("hidden");
+                }
         }
+
+        
+
     }
 
     function menu_BG() {
@@ -89,6 +99,11 @@
             menu_BG();
         }
 
+        // INIT NAVIGATION SETUP
+        var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+        start = header.dataset.start;
+        nav_BG();
+
     }
 
 // Event Listeners
@@ -105,20 +120,18 @@
     window.onscroll =function() {
         scrolling = true;
     };
+    
     setInterval( function() {
         if ( scrolling ) {
             scrolling = false;
             scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
 
-            if (scrollPosition > lastScrollTop){
-                nav_BG("down");
-            } else {
-                nav_BG("up");
-            }
+            nav_BG(scrollPosition,lastScrollTop);
 
             lastScrollTop = scrollPosition <= 0 ? 0 : scrollPosition; // For Mobile or negative scrolling
         }
     }, 250 );
+   
 
 
 
