@@ -68,6 +68,7 @@ table {
         position: fixed;
         left:0;
         top:0;
+        z-index: 1000;
         -webkit-transition:all .6s cubic-bezier(0.77, 0, 0.175, 1);
                 transition:all .6s cubic-bezier(0.77, 0, 0.175, 1);
     }
