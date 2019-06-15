@@ -322,6 +322,14 @@ table {
         flex:1;
     }
 }
+@media screen and (max-width:320px) {
+    .container {
+        width:280px;
+    }
+    .col-3 {
+        flex:1;
+    }
+}
 
 
 /*  ==========================================================================
@@ -365,13 +373,18 @@ table {
 
 
 
-/* TYPOGRAPHIE */
+/*  ==========================================================================
+    TYPO
+    ========================================================================== */
 
-body {
-    font-size:15px;
-    line-height:17px;
-}
-h1 {
-    font-size:32px;
-    line-height:35px;
-}
+    body {
+        font-size:15px;
+        line-height:17px;
+    }
+    h1 {
+        font-size:32px;
+        line-height:35px;
+    }
+    .section-headline {
+        padding:0 20px; 
+    }
