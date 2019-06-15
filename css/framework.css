@@ -43,6 +43,10 @@ table {
 	border-spacing: 0;
 }
 
+main {
+    min-height:100vh;
+}
+
 /* global box-sizing */
 *,
 *:after,
