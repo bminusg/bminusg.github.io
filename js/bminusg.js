@@ -2,7 +2,7 @@
     //var body = document.body; //IE 'quirks'
     //var document = document.documentElement; //IE with doctype
     //document = (document.clientHeight) ? document : body;
-    var btnMenu, header, start, h;
+    var btnMenu, header, pos, h, hero;
 
 // POLYFILLS
     /**
@@ -46,22 +46,32 @@
 
 
     // NAVIGATION
-    function nav_BG(scrollPosition,lastScrollTop) {
+    function nav_BG(scrollPosition,lastScrollTop,pos) {
 
         
-        switch(start) {
-            case "apres-hero":
-                console.log("APRES HERO");
-                
-                header.style.top = h + "px";
-                break;
-            default:
-                if (scrollPosition > lastScrollTop){
-                    header.classList.add("hidden");
-                } else {
-                    header.classList.remove("hidden");
-                }
+
+        scrollPosition = (scrollPosition) ? scrollPosition : window.pageYOffset;
+
+        console.log(scrollPosition);
+        console.log(hero.clientHeight);
+
+
+        if (scrollPosition < hero.clientHeight) {
+            console.log("ON HERO");
+            header.dataset.pos = "on-hero";
+            header.classList.remove("hidden");
         }
+        if (scrollPosition > hero.clientHeight) {
+            console.log("APRES HERO");
+            header.dataset.pos = "apres-hero";
+            
+            if (scrollPosition > lastScrollTop){
+                header.classList.add("hidden");
+            } else {
+                header.classList.remove("hidden");
+            }
+        }
+    
 
         
 
@@ -76,32 +86,33 @@
 
 
 
-// init functions
+// init framework
 
     function bminusg() {
 
+        // DEFINE GENERAL VARS
+        initScrollTo = document.querySelectorAll('.scroll-to-link');
+        btnMenu = document.querySelector("#btn-menu");
+        header = document.querySelector("#header-primary-wrapper");
+        h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+        hero = document.querySelector("#hero");
+        pos = header.dataset.pos;
+
         // INIT SCROLLTO FUNCTION
-        var initScrollTo = document.querySelectorAll('.scroll-to-link');
         initScrollTo.forEach(function(item){
             item.onclick = function() {
                 //scrollTo(document.body, 1000, 1250);
-
                 console.log("scroll du");
-
                 window.scrollBy({ top: 300, left: 0, behavior: "smooth" });
             }
         });
 
         // INIT MOBILE MENU
-        btnMenu = document.querySelector("#btn-menu");
-        header = document.querySelector("#header-primary-wrapper");
         if (btnMenu) {
             menu_BG();
         }
 
-        // INIT NAVIGATION SETUP
-        var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-        start = header.dataset.start;
+        // INIT NAVIGATION SETUP        
         nav_BG();
 
     }
@@ -126,8 +137,7 @@
             scrolling = false;
             scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
 
-            nav_BG(scrollPosition,lastScrollTop);
-
+            nav_BG(scrollPosition,lastScrollTop,pos);
             lastScrollTop = scrollPosition <= 0 ? 0 : scrollPosition; // For Mobile or negative scrolling
         }
     }, 250 );
