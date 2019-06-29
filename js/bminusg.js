@@ -2,7 +2,7 @@
     //var body = document.body; //IE 'quirks'
     //var document = document.documentElement; //IE with doctype
     //document = (document.clientHeight) ? document : body;
-    var btnMenu, header, pos, h, hero;
+    var btnMenu, header, pos, h, hero, navListItem;
 
 // POLYFILLS
     /**
@@ -17,63 +17,30 @@
 
 // Remote Functions
 
-    // SCROLLTO FUNCTION        
-    function scrollTo(element, to, duration) {
-        
-        var start = element.scrollTop,
-            change = to - start,
-            currentTime = 0,
-            increment = 20;
-        
-        var animateScroll = function(){        
-            currentTime += increment;
-            var val = Math.easeInOutQuad(currentTime, start, change, duration);
-            element.scrollTop = val;
-            console.log(element);
-            if(currentTime < duration) {
-                setTimeout(animateScroll, increment);
-            }
-        };
-        animateScroll();
-    }
-    // t = current time b = start value c = change in value d = duration
-    Math.easeInOutQuad = function (t, b, c, d) {
-    t /= d/2;
-        if (t < 1) return c/2*t*t + b;
-        t--;
-        return -c/2 * (t*(t-2) - 1) + b;
-    };
-
-
     // NAVIGATION
     function nav_BG(scrollPosition,lastScrollTop,pos) {
 
-        
-
         scrollPosition = (scrollPosition) ? scrollPosition : window.pageYOffset;
 
-        console.log(scrollPosition);
-        console.log(hero.clientHeight);
-
-
-        if (scrollPosition < hero.clientHeight) {
-            console.log("ON HERO");
-            header.dataset.pos = "on-hero";
-            header.classList.remove("hidden");
-        }
-        if (scrollPosition > hero.clientHeight) {
-            console.log("APRES HERO");
-            header.dataset.pos = "apres-hero";
-            
-            if (scrollPosition > lastScrollTop){
-                header.classList.add("hidden");
-            } else {
+        if (hero) {
+            if (scrollPosition < hero.clientHeight) {
+                console.log("ON HERO");
+                header.dataset.pos = "on-hero";
                 header.classList.remove("hidden");
             }
+            if (scrollPosition > hero.clientHeight) {
+                console.log("APRES HERO");
+                header.dataset.pos = "apres-hero";
+                
+                if (scrollPosition > lastScrollTop){
+                    header.classList.add("hidden");
+                } else {
+                    header.classList.remove("hidden");
+                }
+            }  
         }
-    
 
-        
+             
 
     }
 
@@ -82,6 +49,17 @@
             this.classList.toggle('active');
             header.classList.toggle('active');
         }
+
+        if (window.matchMedia("(orientation: portrait)").matches) {
+            navListItem.forEach(function(elem){
+                elem.onclick = function() {
+                    btnMenu.classList.toggle('active');
+                    header.classList.toggle('active');
+                }
+            });
+        }
+
+
     }
 
 
@@ -97,13 +75,16 @@
         h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
         hero = document.querySelector("#hero");
         pos = header.dataset.pos;
+        navListItem = document.querySelectorAll('.nav-list-item');
 
         // INIT SCROLLTO FUNCTION
         initScrollTo.forEach(function(item){
             item.onclick = function() {
-                //scrollTo(document.body, 1000, 1250);
-                console.log("scroll du");
-                window.scrollBy({ top: 300, left: 0, behavior: "smooth" });
+ 
+                if (window.location.href != document.querySelector('body').dataset.url) {
+                    window.location.href = document.querySelector('body').dataset.url + '/#' + item.href.split('#')[1];
+                }
+
             }
         });
 
